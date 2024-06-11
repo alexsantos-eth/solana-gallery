@@ -6,6 +6,10 @@ const nextConfig = {
     config.externals.push("pino-pretty", "encoding");
     return config;
   },
+  // domains
+  images: {
+    domains: ["images.unsplash.com", "localhost"],
+  },
 };
 
 module.exports = nextConfig;

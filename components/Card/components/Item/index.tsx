@@ -21,7 +21,7 @@ interface CardItemProps {
 const CardItem: React.FC<CardItemProps> = ({
   as: Tag = "div",
   children,
-  className,
+  className = "text-sm max-w-sm mt-2",
   translateX = 0,
   translateY = 0,
   translateZ = 0,

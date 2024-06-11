@@ -12,7 +12,6 @@ import {
   NavbarItem,
 } from "@nextui-org/navbar";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { getUnit } from "@/layout/utils";
 
 export const Navbar: React.FC = () => {
   return (
@@ -22,19 +21,12 @@ export const Navbar: React.FC = () => {
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-2" href="/">
             <p className="font-bold text-xl">👽</p>
-            <p
-              style={{
-                color: "hsl(var(--nextui-default-700))",
-                fontWeight: "bold",
-              }}
-            >
-              RebelGallery
-            </p>
+            <p className="font-bold text-foreground">RebelGallery</p>
           </NextLink>
         </NavbarBrand>
       </NavbarContent>
 
-      {/* LINKS */}
+      {/* MOBILE */}
       <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
@@ -59,7 +51,7 @@ export const Navbar: React.FC = () => {
         </NavbarItem>
 
         <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-          <GitHub className="text-default-500" size={20} />
+          <GitHub className="text-foreground" size={20} />
         </Link>
         <ThemeSwitch />
       </NavbarContent>

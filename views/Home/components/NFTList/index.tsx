@@ -1,37 +1,13 @@
-// src/NFTList.js
-import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import React from "react";
 
-import { keypairIdentity, Metaplex } from "@metaplex-foundation/js";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { Connection, Keypair } from "@solana/web3.js";
+import Card from "@/components/Card";
+import { Spacer } from "@nextui-org/spacer";
 
-const NFTList = () => {
-  const [nfts, setNfts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { publicKey } = useWallet();
+import { useNFTList } from "./hooks";
 
-  useEffect(() => {
-    const fetchNFTs = async () => {
-      const connection = new Connection(
-        `https://mainnet.helius-rpc.com/?api-key=e97119bc-4b0f-4cc5-a627-5cde680dbea0`,
-      );
-      const keypair = Keypair.generate();
-
-      const metaplex = new Metaplex(connection);
-      metaplex.use(keypairIdentity(keypair));
-
-      if (!publicKey) return;
-
-      const allNFTs = await metaplex
-        .nfts()
-        .findAllByOwner({ owner: publicKey });
-
-      console.log(allNFTs);
-    };
-
-    fetchNFTs();
-  }, [publicKey]);
+const NFTList: React.FC = () => {
+  const { loading, error, nfts } = useNFTList();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -41,7 +17,35 @@ const NFTList = () => {
       <h1>NFTs</h1>
       <ul>
         {nfts.map((nft, index) => (
-          <li key={index}>{nft.name}</li>
+          <Card.Container key={index}>
+            <Card.Body className="bg-text">
+              <Card.Item
+                as="h2"
+                className="text-xl text-default-900"
+                translateZ="50"
+              >
+                {nft.name}
+              </Card.Item>
+              <Card.Item as="p" translateZ="60">
+                {nft.description}
+              </Card.Item>
+
+              <Spacer y={4} />
+
+              <Card.Item
+                className="w-full rounded-lg overflow-hidden"
+                translateZ="100"
+              >
+                <Image
+                  alt="thumbnail"
+                  className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                  height="300"
+                  src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  width="300"
+                />
+              </Card.Item>
+            </Card.Body>
+          </Card.Container>
         ))}
       </ul>
     </div>

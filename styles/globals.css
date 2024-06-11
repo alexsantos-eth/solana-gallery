@@ -13,23 +13,24 @@
 }
 
 .wallet-adapter-modal-title {
-  color: hsl(var(--nextui-text));
+  color: hsl(var(--nextui-default-900));
   line-height: 1.2;
   padding: 64px 48px 24px 48px;
   font-family: var(--font-sans);
 }
 
 .wallet-adapter-button {
-  color: hsl(var(--nextui-default-500));
+  color: hsl(var(--nextui-default));
 }
 
 .wallet-adapter-button:not([disabled]):hover {
   background-color: hsl(var(--nextui-default-100));
-  color: hsl(var(--nextui-text));
+  color: hsl(var(--nextui-default-900));
 }
 
 .wallet-adapter-modal-button-close {
   background-color: hsl(var(--nextui-default-100));
+  transform: scale(0.8);
 }
 
 .wallet-adapter-modal-overlay {
@@ -48,12 +49,12 @@
 .wallet-adapter-dropdown-list-item {
   font-family: var(--font-sans);
   font-weight: 500;
-  color: hsl(var(--nextui-default-500));
+  color: hsl(var(--nextui-default));
 }
 
 .wallet-adapter-dropdown-list-item:not([disabled]):hover {
   background-color: hsl(var(--nextui-default-100));
-  color: hsl(var(--nextui-text));
+  color: hsl(var(--nextui-default-900));
 }
 
 .wallet-adapter-button-trigger {
@@ -63,7 +64,7 @@
   border-radius: 8px;
   font-family: var(--font-sans);
   background-color: transparent;
-  color: hsl(var(--nextui-default-500));
+  color: hsl(var(--nextui-foreground));
   border: 1px solid hsl(var(--nextui-default));
 }
 

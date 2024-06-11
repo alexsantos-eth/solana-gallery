@@ -5,21 +5,24 @@ import { ThemeProviderProps } from "next-themes/dist/types";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-import { NextUIProvider } from "@nextui-org/system";
+import { NextUIProvider as Provider } from "@nextui-org/system";
 
-export interface ProvidersProps {
+export interface NextUIProviderProps {
   children: React.ReactNode;
   themeProps?: ThemeProviderProps;
 }
 
-const Providers: React.FC<ProvidersProps> = ({ children, themeProps }) => {
+const NextUIProvider: React.FC<NextUIProviderProps> = ({
+  children,
+  themeProps = { attribute: "class", defaultTheme: "dark" },
+}) => {
   const router = useRouter();
 
   return (
-    <NextUIProvider navigate={router.push}>
+    <Provider navigate={router.push}>
       <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-    </NextUIProvider>
+    </Provider>
   );
 };
 
-export default Providers;
+export default NextUIProvider;

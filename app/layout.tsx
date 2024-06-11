@@ -1,3 +1,4 @@
+"use client";
 import "@/styles/globals.css";
 
 import clsx from "clsx";
@@ -5,7 +6,7 @@ import React from "react";
 
 import { fontSans } from "@/config/fonts";
 import { Navbar } from "@/layout/components/Navbar";
-import Providers from "@/providers/NextUI";
+import Providers from "@/providers";
 import { Link } from "@nextui-org/link";
 
 interface RootLayoutProps {
@@ -21,7 +22,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+        <Providers>
           <div className="relative flex flex-col h-screen">
             <Navbar />
 

@@ -1,6 +1,6 @@
 import NextLink from "next/link";
 import React from "react";
-import { GitHub, Image } from "react-feather";
+import { GitHub } from "react-feather";
 
 import ThemeSwitch from "@/components/ThemeSwitch";
 import { siteConfig } from "@/config/site";
@@ -11,6 +11,7 @@ import {
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/navbar";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 export const Navbar: React.FC = () => {
   return (
@@ -18,30 +19,39 @@ export const Navbar: React.FC = () => {
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         {/* LOGO */}
         <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Image />
-            <p className="font-bold text-inherit">Solana Gallery</p>
+          <NextLink className="flex justify-start items-center gap-2" href="/">
+            <p className="font-bold text-xl">👽</p>
+            <p className="font-bold text-foreground">RebelGallery</p>
           </NextLink>
         </NavbarBrand>
       </NavbarContent>
 
-      {/* LINKS */}
+      {/* MOBILE */}
       <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
+        <NavbarItem>
+          <WalletMultiButton />
+        </NavbarItem>
+
         <NavbarItem className="hidden sm:flex gap-2">
           <Link isExternal aria-label="Github" href={siteConfig.links.github}>
             <GitHub className="text-default-500" size={20} />
           </Link>
+
           <ThemeSwitch />
         </NavbarItem>
       </NavbarContent>
 
-      {/* MOBILE */}
+      {/* DESKTOP */}
       <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
+        <NavbarItem>
+          <WalletMultiButton />
+        </NavbarItem>
+
         <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-          <GitHub className="text-default-500" size={20} />
+          <GitHub className="text-foreground" size={20} />
         </Link>
         <ThemeSwitch />
       </NavbarContent>

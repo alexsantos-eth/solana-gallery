@@ -19,3 +19,7 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
 };
+
+export const baseUnit = 8;
+
+export const getUnit = (value: number) => `${value * baseUnit}px`;

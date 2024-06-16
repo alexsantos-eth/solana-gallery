@@ -111,7 +111,7 @@ export const BackgroundBeams = React.memo(
                   duration: Math.random() * 10 + 10,
                   ease: "easeInOut",
                   repeat: Infinity,
-                  delay: 1,
+                  delay: 3,
                 }}
               >
                 <stop stopColor="#18CCFC" stopOpacity="0" />

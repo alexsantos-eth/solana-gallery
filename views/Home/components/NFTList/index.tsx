@@ -18,7 +18,11 @@ const NFTList: React.FC = () => {
   const length = nfts.length;
 
   if (loading || !connected) {
-    return <Header />;
+    return <Header length={1} />;
+  }
+
+  if (connected && !length && !loading) {
+    return <Header length={length} />;
   }
 
   return (

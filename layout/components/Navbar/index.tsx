@@ -18,7 +18,7 @@ export const Navbar: React.FC = () => {
         {/* LOGO */}
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-2" href="/">
-            <Image src="/logo.png" alt="logo" width={30} height={30} />
+            <Image alt="logo" height={30} src="/logo.png" width={30} />
           </NextLink>
         </NavbarBrand>
       </NavbarContent>

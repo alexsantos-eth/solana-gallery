@@ -2,53 +2,115 @@ import Image from "next/image";
 import React from "react";
 
 import Card from "@/components/Card";
+import { JsonMetadata } from "@metaplex-foundation/js";
+import { Skeleton } from "@nextui-org/react";
 import { Spacer } from "@nextui-org/spacer";
+import { useWallet } from "@solana/wallet-adapter-react";
 
+import Header from "./components/Header";
 import { useNFTList } from "./hooks";
 
+const BOX_SIZE = 200;
 const NFTList: React.FC = () => {
-  const { loading, error, nfts } = useNFTList();
+  const { nfts, loading } = useNFTList();
+  const { connected } = useWallet();
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  const length = nfts.length;
+
+  if (loading || !connected) {
+    return <Header />;
+  }
 
   return (
-    <div>
-      <h1>NFTs</h1>
-      <ul>
-        {nfts.map((nft, index) => (
-          <Card.Container key={index}>
-            <Card.Body className="bg-text">
-              <Card.Item
-                as="h2"
-                className="text-xl text-default-900"
-                translateZ="50"
-              >
-                {nft.name}
-              </Card.Item>
-              <Card.Item as="p" translateZ="60">
-                {nft.description}
-              </Card.Item>
+    <>
+      <Spacer y={4} />
+      <div
+        className="w-full grid py-4"
+        style={{
+          gap: "30px",
+          gridTemplateColumns: `repeat(auto-fill, minmax(${BOX_SIZE}px, 1fr))`,
+        }}
+      >
+        {Array.from({ length }).map((nft, index) => {
+          const nftData = nfts[index] as JsonMetadata | undefined;
 
-              <Spacer y={4} />
+          return (
+            <Card.Container key={index}>
+              <Card.Body>
+                <Card.Item as="div" className="w-[80%]" translateZ="50">
+                  {nftData?.name ? (
+                    <p className="font-bold truncate leading-none">
+                      {nftData?.name}
+                    </p>
+                  ) : (
+                    <Skeleton
+                      as="div"
+                      className="h-6 w-full rounded-lg "
+                      style={{
+                        backgroundColor: "hsl(var(--nextui-default-200))",
+                      }}
+                    >
+                      <div className="h-6 w-full rounded-lg" />
+                    </Skeleton>
+                  )}
+                </Card.Item>
 
-              <Card.Item
-                className="w-full rounded-lg overflow-hidden"
-                translateZ="100"
-              >
-                <Image
-                  alt="thumbnail"
-                  className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
-                  height="300"
-                  src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  width="300"
-                />
-              </Card.Item>
-            </Card.Body>
-          </Card.Container>
-        ))}
-      </ul>
-    </div>
+                <Spacer y={nftData?.description ? 2 : 2} />
+
+                <Card.Item as="div" className="w-full" translateZ="60">
+                  {nftData?.description ? (
+                    <p className="truncate text-default-600 text-sm leading-none">
+                      {nftData?.description}
+                    </p>
+                  ) : (
+                    <Skeleton
+                      as="div"
+                      className="h-5 w-full rounded-lg"
+                      style={{
+                        backgroundColor: "hsl(var(--nextui-default-200))",
+                      }}
+                    >
+                      <div className="h-5 w-full rounded-lg " />
+                    </Skeleton>
+                  )}
+                </Card.Item>
+
+                <Spacer y={4} />
+
+                <Card.Item
+                  className="w-full rounded-lg overflow-hidden"
+                  style={{
+                    height: `${BOX_SIZE}px`,
+                    backgroundColor: "hsl(var(--nextui-default-200))",
+                  }}
+                  translateZ="100"
+                >
+                  {nftData?.image ? (
+                    <Image
+                      fill
+                      alt="thumbnail"
+                      className="object-cover rounded-lg"
+                      src={nftData?.image}
+                    />
+                  ) : (
+                    <Skeleton
+                      as="div"
+                      className="w-full rounded-lg"
+                      style={{
+                        height: `${BOX_SIZE}px`,
+                        backgroundColor: "hsl(var(--nextui-default-200))",
+                      }}
+                    >
+                      <div className="h-50 w-full rounded-lg" />
+                    </Skeleton>
+                  )}
+                </Card.Item>
+              </Card.Body>
+            </Card.Container>
+          );
+        })}
+      </div>
+    </>
   );
 };
 

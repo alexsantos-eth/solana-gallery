@@ -9,15 +9,16 @@ import {
   NavbarItem,
 } from "@nextui-org/navbar";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import Image from "next/image";
 
 export const Navbar: React.FC = () => {
   return (
-    <NextUINavbar maxWidth="xl" position="sticky">
+    <NextUINavbar maxWidth="xl" style={{ position: "fixed" }}>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         {/* LOGO */}
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-2" href="/">
-            <p className="font-bold text-xl">👽</p>
+            <Image src="/logo.png" alt="logo" width={30} height={30} />
           </NextLink>
         </NavbarBrand>
       </NavbarContent>

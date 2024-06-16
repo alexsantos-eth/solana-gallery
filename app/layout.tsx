@@ -37,8 +37,8 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
                 href="https://github.com/RebelCoderz"
                 title="Powered by RebelCoderz"
               >
-                <span className="text-default-600">Powered by</span>
-                <p className="text-primary">RebelCoderz</p>
+                <span className="text-default-600 text-sm">Powered by</span>
+                <p className="text-primary text-sm">RebelCoderz</p>
               </Link>
             </footer>
           </div>

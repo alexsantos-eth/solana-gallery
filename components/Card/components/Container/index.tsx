@@ -44,7 +44,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          "py-20 flex items-center justify-center",
+          "w-full flex items-center justify-center",
           containerClassName,
         )}
         style={{
@@ -54,7 +54,7 @@ const CardContainer: React.FC<CardContainerProps> = ({
         <div
           ref={containerRef}
           className={cn(
-            "flex items-center justify-center relative transition-all duration-200 ease-linear",
+            "w-full flex items-center justify-center relative transition-all duration-200 ease-linear",
             className,
           )}
           style={{

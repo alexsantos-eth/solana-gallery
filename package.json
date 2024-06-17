@@ -9,6 +9,7 @@
 		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
 	},
 	"dependencies": {
+		"@coral-xyz/anchor": "^0.30.0",
 		"@metaplex-foundation/digital-asset-standard-api": "^1.0.3",
 		"@metaplex-foundation/js": "^0.20.1",
 		"@metaplex-foundation/umi": "^0.9.1",
@@ -29,6 +30,7 @@
 		"@nextui-org/theme": "2.2.5",
 		"@react-aria/ssr": "3.9.4",
 		"@react-aria/visually-hidden": "3.8.12",
+		"@solana/spl-token": "^0.4.6",
 		"@solana/wallet-adapter-backpack": "^0.1.14",
 		"@solana/wallet-adapter-base": "^0.9.23",
 		"@solana/wallet-adapter-phantom": "^0.9.24",

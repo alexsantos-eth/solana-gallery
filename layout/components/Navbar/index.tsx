@@ -1,3 +1,4 @@
+import Image from "next/image";
 import NextLink from "next/link";
 import React from "react";
 
@@ -8,8 +9,8 @@ import {
   NavbarContent,
   NavbarItem,
 } from "@nextui-org/navbar";
+import { Button } from "@nextui-org/react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import Image from "next/image";
 
 export const Navbar: React.FC = () => {
   return (
@@ -20,6 +21,12 @@ export const Navbar: React.FC = () => {
           <NextLink className="flex justify-start items-center gap-2" href="/">
             <Image alt="logo" height={30} src="/logo.png" width={30} />
           </NextLink>
+
+          <NavbarItem>
+            <Button color="secondary" size="sm" variant="bordered">
+              Exchange LAB02
+            </Button>
+          </NavbarItem>
         </NavbarBrand>
       </NavbarContent>
 

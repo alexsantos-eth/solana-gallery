@@ -18,6 +18,18 @@ module.exports = {
   darkMode: "class",
   plugins: [
     nextui({
+      layout: {
+        radius: {
+          small: "12px", 
+          medium: "12px", 
+          large: "12px", 
+        },
+        borderWidth: {
+          small: "1px", 
+          medium: "1px", 
+          large: "1px",
+        },
+      },
       themes: {
         light: {
           colors: {
@@ -28,16 +40,16 @@ module.exports = {
               DEFAULT: "#006FEE",
             },
             default: {
-              50: '#ffffff',
-              100: '#fbfbfb',
-              200: '#dedfdf',
-              300: '#cacbcb',
-              400: '#bdbebe',
-              500: '#7a7e83',
-              600: '#64696f',
-              700: '#4e535a',
-              800: '#383e46',
-              900: '#222831',
+              50: "#ffffff",
+              100: "#fbfbfb",
+              200: "#dedfdf",
+              300: "#cacbcb",
+              400: "#bdbebe",
+              500: "#7a7e83",
+              600: "#64696f",
+              700: "#4e535a",
+              800: "#383e46",
+              900: "#222831",
               DEFAULT: "#7a7e83",
             },
           },

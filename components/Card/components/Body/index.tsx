@@ -9,9 +9,10 @@ const CardBody: React.FC<CardBodyProps> = ({ children, className }) => {
   return (
     <div
       className={cn(
-        "h-96 w-96 [transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]",
+        "w-full [transform-style:preserve-3d] border-1 border-default rounded-xl p-5 [&>*]:[transform-style:preserve-3d] bg-background",
         className,
       )}
+      style={{ backgroundColor: "hsl(var(--nextui-default-100))" }}
     >
       {children}
     </div>

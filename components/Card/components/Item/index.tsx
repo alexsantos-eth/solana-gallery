@@ -49,7 +49,7 @@ const CardItem: React.FC<CardItemProps> = ({
   return (
     <Tag
       ref={ref}
-      className={cn("w-fit transition duration-200 ease-linear", className)}
+      className={cn("w-full transition duration-200 ease-linear", className)}
       {...rest}
     >
       {children}

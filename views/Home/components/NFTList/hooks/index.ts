@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { SOL_RPC } from "@/config/apis";
-import { keypairIdentity, Metaplex } from "@metaplex-foundation/js";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { Connection, Keypair } from "@solana/web3.js";
-
-import { NFTBase, NFTMeta } from "../types";
+import {
+  JsonMetadata,
+  Metaplex,
+  walletAdapterIdentity,
+} from "@metaplex-foundation/js";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 /**
  * The `useNFTList` function fetches a list of NFTs owned by a specific public key using Metaplex and
@@ -16,50 +16,71 @@ import { NFTBase, NFTMeta } from "../types";
  * 3. `error`: Any error that occurred during the fetching of NFT data.
  */
 export const useNFTList = () => {
-  const [nfts, setNfts] = useState<NFTMeta[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const { publicKey } = useWallet();
+  const [nftData, setNftData] = useState<JsonMetadata[]>([]);
+  const { connection } = useConnection();
+  const wallet = useWallet();
+  const publicKey = wallet.publicKey;
 
   useEffect(() => {
-    const fetchNFTs = async () => {
-      const connection = new Connection(SOL_RPC);
-      const keypair = Keypair.generate();
+    // CONSTANTS
+    const metaplex = Metaplex.make(connection).use(
+      walletAdapterIdentity(wallet),
+    );
 
-      const metaplex = new Metaplex(connection);
+    const fetchNfts = async () => {
+      if (!wallet.connected) {
+        return;
+      }
 
-      metaplex.use(keypairIdentity(keypair));
+      if (!publicKey) {
+        return;
+      }
 
-      if (!publicKey) return;
+      const NFTs = await metaplex.nfts().findAllByOwner({
+        owner: publicKey,
+      });
 
-      const allNFTs = (await metaplex
-        .nfts()
-        .findAllByOwner({ owner: publicKey })) as NFTBase[];
+      setLoading(false);
+      setNftData(NFTs.map((nft) => ({ name: nft.name })));
 
-      const allNftsMetadataRequest = allNFTs.map(async (nft) =>
-        fetch(nft.uri).then((response) => response.json()),
-      ) as Promise<NFTMeta>[];
+      const ntfRequests: Promise<JsonMetadata>[] = NFTs.map(
+        (nft, index) =>
+          new Promise((resolve) => {
+            setTimeout(async () => {
+              try {
+                let fetchResult = await fetch(nft.uri);
+                let json = await fetchResult.json();
 
-      const parsedNFTs = await Promise.all(allNftsMetadataRequest);
+                setNftData((prev) => {
+                  const newNftData = [...prev];
 
-      return parsedNFTs;
+                  newNftData[index] = json;
+
+                  return newNftData;
+                });
+                resolve(json);
+              } catch (error) {
+                // eslint-disable-next-line no-console
+                console.error(error);
+                resolve({});
+              }
+            }, 1000 * index);
+          }),
+      );
+
+      return Promise.all(ntfRequests);
     };
 
-    setLoading(true);
-    fetchNFTs()
-      .then((nfts) => {
-        setNfts(nfts || []);
-        setLoading(false);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
+    setLoading(false);
+    fetchNfts().catch((error) => {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    });
   }, [publicKey]);
 
   return {
-    nfts,
+    nfts: nftData,
     loading,
-    error,
   };
 };

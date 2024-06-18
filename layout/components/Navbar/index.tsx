@@ -3,6 +3,7 @@ import NextLink from "next/link";
 import React from "react";
 
 import ThemeSwitch from "@/components/ThemeSwitch";
+import { useLabProgram } from "@/programs/lab";
 import {
   Navbar as NextUINavbar,
   NavbarBrand,
@@ -13,6 +14,8 @@ import { Button } from "@nextui-org/react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 export const Navbar: React.FC = () => {
+  const { invoke } = useLabProgram();
+
   return (
     <NextUINavbar maxWidth="xl" style={{ position: "fixed" }}>
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -23,7 +26,12 @@ export const Navbar: React.FC = () => {
           </NextLink>
 
           <NavbarItem>
-            <Button color="secondary" size="sm" variant="bordered">
+            <Button
+              color="secondary"
+              size="sm"
+              variant="bordered"
+              onClick={invoke}
+            >
               Exchange LAB02
             </Button>
           </NavbarItem>

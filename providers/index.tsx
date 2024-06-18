@@ -11,9 +11,9 @@ export interface ProvidersProps {
 
 const Providers: React.FC<ProvidersProps> = ({ children }) => {
   return (
-    <NextUIProvider>
-      <ConnectWalletProvider>{children}</ConnectWalletProvider>
-    </NextUIProvider>
+    <ConnectWalletProvider>
+      <NextUIProvider>{children}</NextUIProvider>
+    </ConnectWalletProvider>
   );
 };
 

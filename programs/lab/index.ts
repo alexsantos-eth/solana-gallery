@@ -1,9 +1,12 @@
+/* eslint-disable no-console */
 import { AnchorProvider, Program, setProvider } from "@coral-xyz/anchor";
 import { PublicKey } from "@metaplex-foundation/js";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 
 import IDL from "./idl/lab.json";
 import { Lab } from "./types/lab";
+import { useState } from "react";
+import { MINT_TOKEN_LAB, VAULT_PUBKEY } from "@/config/apis";
 
 /**
  * The `useProgram` function sets up a connection, wallet, and program data for a specific program in
@@ -15,57 +18,66 @@ import { Lab } from "./types/lab";
 export const useLabProgram = () => {
   const { connection } = useConnection();
   const wallet = useAnchorWallet();
+  const [loading, setLoading] = useState(false);
 
   const setProgramData = async () => {
-    if (!wallet) return;
+    setLoading(true);
 
-    const provider = new AnchorProvider(connection, wallet, {});
+    try {
+      if (!wallet) return;
 
-    setProvider(provider);
+      const provider = new AnchorProvider(connection, wallet, {});
 
-    const program = new Program<Lab>(IDL as unknown as Lab, provider);
+      setProvider(provider);
 
-    const tokenId = "2F9vbTqF3sHkQs574Nu3mfutxK1haWVrUT28trK8Fjtm";
-    const tokenAccount = await connection.getTokenAccountsByOwner(
-      wallet.publicKey,
-      { mint: new PublicKey(tokenId) },
-    );
+      const program = new Program<Lab>(IDL as unknown as Lab, provider);
 
-    const vaultPubKey = "93CaGjCexiZN7e5SWYy8zBDwXZM77SESw545Wt3wQN8E";
-    const vaultAccount = new PublicKey(vaultPubKey);
+      const tokenId = MINT_TOKEN_LAB;
+      const tokenAccount = await connection.getTokenAccountsByOwner(
+        wallet.publicKey,
+        { mint: new PublicKey(tokenId) },
+      );
 
-    const tx = await program.methods
-      .initialize()
-      .accounts({
-        signer: wallet.publicKey,
-        tokenAccount: tokenAccount.value?.[0].pubkey,
-        vaultTokenAccount: vaultAccount,
-      })
-      .rpc();
+      const vaultPubKey = VAULT_PUBKEY;
+      const vaultAccount = new PublicKey(vaultPubKey);
 
-    const latestBlockHash = await connection.getLatestBlockhash();
+      const tx = await program.methods
+        .initialize()
+        .accounts({
+          signer: wallet.publicKey,
+          tokenAccount: tokenAccount.value?.[0].pubkey,
+          vaultTokenAccount: vaultAccount,
+        })
+        .rpc();
 
-    await connection.confirmTransaction(
-      {
-        blockhash: latestBlockHash.blockhash,
-        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-        signature: tx,
-      },
-      "confirmed",
-    );
+      const latestBlockHash = await connection.getLatestBlockhash();
 
-    const txDetails = await program.provider.connection.getTransaction(tx, {
-      commitment: "confirmed",
-    });
+      await connection.confirmTransaction(
+        {
+          blockhash: latestBlockHash.blockhash,
+          lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+          signature: tx,
+        },
+        "confirmed",
+      );
 
-    const logs = txDetails?.meta?.logMessages || null;
+      const txDetails = await program.provider.connection.getTransaction(tx, {
+        commitment: "confirmed",
+      });
 
-    if (!logs) {
-      console.log("No logs found");
+      const logs = txDetails?.meta?.logMessages || null;
+
+      if (!logs) {
+        console.log("No logs found");
+      }
+
+      console.log(logs);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-
-    console.log(logs);
   };
 
-  return { invoke: setProgramData };
+  return { invoke: setProgramData, loading };
 };

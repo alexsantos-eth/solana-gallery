@@ -1,24 +1,16 @@
+import React from "react";
+
 import { BackgroundBeams } from "@/components/Beams";
 import { FlipWords } from "@/components/FlipWord";
 import { Spacer } from "@nextui-org/spacer";
-import React, { useEffect, useState } from "react";
+
+import useTimer from "../../../GetUmbrellas/hooks";
 
 interface HeaderProps {
   length: number;
 }
 const Header: React.FC<HeaderProps> = ({ length }) => {
-  const [timer, setTimer] = useState(7);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (timer === 0) return;
-      setTimer((prev) => prev - 1);
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  });
+  const { timer } = useTimer();
 
   return (
     <>

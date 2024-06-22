@@ -1,5 +1,5 @@
 {
-  "address": "9emj9ggz9mC8HT7CKhPg1iAKZppMa8RsyEzkwc7g3uZK",
+  "address": "5Huam8EHQw7ttsPjncSUGQwjzc5WNSV5duY1Tb45LFrC",
   "metadata": {
     "name": "lab",
     "version": "0.1.0",
@@ -31,6 +31,14 @@
         },
         {
           "name": "vault_token_account",
+          "writable": true
+        },
+        {
+          "name": "mint",
+          "writable": true
+        },
+        {
+          "name": "mint_token_account",
           "writable": true
         },
         {

@@ -70,65 +70,74 @@ export const useLabProgram = () => {
 
       let associatedToken = await getAssociatedTokenAddress(mint, owner, true);
 
-      // try {
-      //   const transaction = new Transaction().add(
-      //     createAssociatedTokenAccountInstruction(
-      //       wallet.publicKey,
-      //       associatedToken,
-      //       owner,
-      //       mint,
-      //       TOKEN_PROGRAM_ID,
-      //       ASSOCIATED_PROGRAM_ID,
-      //     ),
-      //   );
+      try {
+        const transaction = new Transaction().add(
+          createAssociatedTokenAccountInstruction(
+            wallet.publicKey,
+            associatedToken,
+            owner,
+            mint,
+            TOKEN_PROGRAM_ID,
+            ASSOCIATED_PROGRAM_ID,
+          ),
+        );
 
-      //   await provider.sendAndConfirm(transaction);
-      //   console.log({ associatedToken: associatedToken.toBase58() });
-      // } catch (error) {
-      //   console.log(error);
-      // }
-
-      console.log({
-        from: mintAuthority.value?.[0].pubkey.toBase58(),
-        to: associatedToken?.toBase58(),
-      });
-      const tx = await program.methods
-        .initialize()
-        .accounts({
-          mint: mintAuthority.value?.[0].pubkey,
-          signer: wallet.publicKey,
-          tokenAccount: tokenAccount.value?.[0].pubkey,
-          mintTokenAccount: associatedToken,
-          vaultTokenAccount: vaultAccount,
-        })
-        .rpc();
-
-      const latestBlockHash = await connection.getLatestBlockhash();
-
-      await connection.confirmTransaction(
-        {
-          blockhash: latestBlockHash.blockhash,
-          lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-          signature: tx,
-        },
-        "confirmed",
-      );
-
-      const txDetails = await program.provider.connection.getTransaction(tx, {
-        commitment: "confirmed",
-      });
-
-      const logs = txDetails?.meta?.logMessages || null;
-
-      if (!logs) {
-        console.log("No logs found");
+        await provider.sendAndConfirm(transaction);
+      } catch (error) {
+        console.log(error);
       }
 
-      console.log(logs);
+      setTimeout(async () => {
+        console.log({
+          from: mintAuthority.value?.[0].pubkey.toBase58(),
+          to: associatedToken?.toBase58(),
+        });
+
+        try {
+          const tx = await program.methods
+            .initialize()
+            .accounts({
+              mint: mintAuthority.value?.[0].pubkey,
+              signer: wallet.publicKey,
+              tokenAccount: tokenAccount.value?.[0].pubkey,
+              mintTokenAccount: associatedToken,
+              vaultTokenAccount: vaultAccount,
+            })
+            .rpc();
+
+          const latestBlockHash = await connection.getLatestBlockhash();
+
+          await connection.confirmTransaction(
+            {
+              blockhash: latestBlockHash.blockhash,
+              lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+              signature: tx,
+            },
+            "confirmed",
+          );
+
+          const txDetails = await program.provider.connection.getTransaction(
+            tx,
+            {
+              commitment: "confirmed",
+            },
+          );
+
+          const logs = txDetails?.meta?.logMessages || null;
+
+          if (!logs) {
+            console.log("No logs found");
+          }
+
+          console.log(logs);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      }, 10_000);
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 
